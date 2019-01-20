@@ -1,0 +1,26 @@
+{
+  "name": "divvy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "node-gyp": "^3.8.0",
+    "scrypt": "^6.0.3",
+    "web3": "^1.0.0-beta.37"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Benoolean/Divvy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Benoolean/Divvy/issues"
+  },
+  "homepage": "https://github.com/Benoolean/Divvy#readme"
+}

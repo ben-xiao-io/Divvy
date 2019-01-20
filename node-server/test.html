@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>we have something</p>
+    <script>
+        $(document).ready(function() {
+            init_firebase()
+        })
+
+        //initiating firebase
+        function init_firebase() {
+            //var json_url = 'https://raw.githubusercontent.com/EthanRBrown/rrad/master/addresses-us-500.json'
+            //var items = []
+            var address = $.getJSON(json_url, function (data) {
+                for (var i = 0; i < data.addresses.length; i++) {
+                    var val = data.addresses[i]
+                    var temp_json = {
+                        'user_data' : JSON.stringify(val.address1 + " " + val.city + " " + val.state + " " + val.postalCode)
+                    }
+                    items.push(temp_json)
+                }
+            })
+            //console.log(items)
+            var config = {
+                apiKey: "AIzaSyBd7TH7iXGg5dtAEnqFjGUkDRnMlSsmi54",
+                authDomain: "divvy-229106.firebaseapp.com",
+                databaseURL: "https://divvy-229106.firebaseio.com",
+                storageBucket: "divvy-229106.appspot.com"
+            }
+            firebase.initializeApp(config)
+
+            // Get a reference to the database service
+            var database = firebase.database()
+            
+            var x = 0;
+            while(false) {
+                writeUserData(
+                    "testing" + JSON.stringify(x),   
+                    "randomname" + JSON.stringify(x), 
+                    "email@emailcom" + JSON.stringify(x), 
+                    "imgurl" + JSON.stringify(x))
+                x++;
+            }
+        }
+
+        function makeid() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < 40; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return JSON.stringify("0x" + text);
+        }
+
+        console.log(makeid());
+
+        // This is the write data to google firebase
+        function writeUserData(userId, name, email, imageUrl) {
+            firebase.database().ref('user/' + userId).set({
+                username: name,
+                email: email,
+                profile_picture : imageUrl
+            })
+        }
+    </script>
+</body>
+</html>
