@@ -1,19 +1,15 @@
+
 var express = require('express')
 var app = express()
+app.use('/media', express.static(__dirname + '/media'))
 const port = 3000
 
-var Web3 = require('web3')
-var web3 = new Web3()
-
-if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider)
-} else {
-    web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-}
-
 app.get('/', (req, res) => {
-    console.log(web3)
     res.sendFile(__dirname + '/test.html')
+})
+
+app.post('/create_contract', (req, res) => {
+    
 })
 
 app.listen(port, () => {

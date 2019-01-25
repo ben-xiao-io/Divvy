@@ -3,6 +3,12 @@ import pandas as pd
 import random
 import numpy as np
 
+loproducers = None
+with open('producerids.json') as f:
+    loproducers = json.load(f)
+
+print(loproducers)
+
 def gen_purchase_hist(max_hist):
     product_df = pd.read_csv('product-cleaned.csv')
 
@@ -33,7 +39,10 @@ def gen_purchase_hist(max_hist):
             'listPrice' : product.iloc[0]['list_price'],
             'salePrice' : product.iloc[0]['sale_price'],
             'producer' : product.iloc[0]['brand'],
+            'producerNum' : loproducers.index(product.iloc[0]['brand']),
             'productid' : product.iloc[0]['uniq_id'], 
+            'productUrl' : product.iloc[0]['product_url'],
+            'productImageUrl' : product.iloc[0]['product_image_urls'],
             'amountPaid' : round((product.iloc[0]['sale_price'] * random.randint(10, 100)), 2),
             'bought' : 1
             }
@@ -48,9 +57,12 @@ def gen_purchase_hist(max_hist):
             'listPrice' : product.iloc[0]['list_price'],
             'salePrice' : product.iloc[0]['sale_price'],
             'producer' : product.iloc[0]['brand'],
+            'producerNum' : loproducers.index(product.iloc[0]['brand']),
             'productid' : product.iloc[0]['uniq_id'], 
+            'productUrl' : product.iloc[0]['product_url'],
+            'productImageUrl' : product.iloc[0]['product_image_urls'],
             'amountPaid' : 0,
-            'brought' : 0
+            'bought' : 0
             }
             
         purchase_history.append(single_zero_purchase)
@@ -58,12 +70,13 @@ def gen_purchase_hist(max_hist):
 
 
 data = json.load(open('user-data.json'))
+temp = []
 for user in data:
     if user['purchase_history'] != None:
         continue
+    temp += gen_purchase_hist(random.randint(8, 25))
 
-    user['purchase_history'] = gen_purchase_hist(random.randint(8, 25))
 
 
 with open('user-product-data.json', 'w') as outfile:
-    json.dump(data, outfile)
+    json.dump(temp, outfile)

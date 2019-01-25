@@ -3,6 +3,7 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+    <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -12,23 +13,13 @@
     <p>we have something</p>
     <script>
         $(document).ready(function() {
-            init_firebase()
+            //init_firebase()
         })
 
         //initiating firebase
         function init_firebase() {
-            //var json_url = 'https://raw.githubusercontent.com/EthanRBrown/rrad/master/addresses-us-500.json'
-            //var items = []
-            var address = $.getJSON(json_url, function (data) {
-                for (var i = 0; i < data.addresses.length; i++) {
-                    var val = data.addresses[i]
-                    var temp_json = {
-                        'user_data' : JSON.stringify(val.address1 + " " + val.city + " " + val.state + " " + val.postalCode)
-                    }
-                    items.push(temp_json)
-                }
-            })
-            //console.log(items)
+            var json_url = 'https://api.myjson.com/bins/85ucw'
+
             var config = {
                 apiKey: "AIzaSyBd7TH7iXGg5dtAEnqFjGUkDRnMlSsmi54",
                 authDomain: "divvy-229106.firebaseapp.com",
@@ -39,16 +30,13 @@
 
             // Get a reference to the database service
             var database = firebase.database()
-            
-            var x = 0;
-            while(false) {
-                writeUserData(
-                    "testing" + JSON.stringify(x),   
-                    "randomname" + JSON.stringify(x), 
-                    "email@emailcom" + JSON.stringify(x), 
-                    "imgurl" + JSON.stringify(x))
-                x++;
-            }
+            var result = $.getJSON(json_url, function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    console.log(data[i].uniq_id)
+                    writeUserData(data[i])
+                }
+            })
+            console.log(result)
         }
 
         function makeid() {
@@ -61,16 +49,21 @@
             return JSON.stringify("0x" + text);
         }
 
-        console.log(makeid());
-
         // This is the write data to google firebase
-        function writeUserData(userId, name, email, imageUrl) {
-            firebase.database().ref('user/' + userId).set({
-                username: name,
-                email: email,
-                profile_picture : imageUrl
+        function writeUserData(data) {
+            firebase.database().ref('product/' + data.uniq_id).set({
+                uniq_id : data.uniq_id,
+                name_title : data.name_title,
+                description : data.description,
+                list_price : data.list_price,
+                sale_price : data.sale_price,
+                product_url : data.product_url,
+                product_image_urls : data.product_image_urls,
+                producer : data.producer,
+                producerNum : data.producerNum,
             })
         }
     </script>
+    <script src="/media/bc.js"></script>
 </body>
 </html>
